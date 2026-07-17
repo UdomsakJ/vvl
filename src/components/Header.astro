@@ -1,0 +1,127 @@
+---
+import site from '../data/site.json';
+
+const nav = [
+  { href: '#about', label: 'เกี่ยวกับเรา' },
+  { href: '#products', label: 'ผลิตภัณฑ์' },
+  { href: '#news', label: 'กิจกรรม' },
+  { href: '#faq', label: 'คำถามที่พบบ่อย' },
+  { href: '#contact', label: 'ติดต่อเรา' },
+];
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <a href="#top" class="header__brand" aria-label="VetVitallist">
+      <img src="/images/vvl-logo2.svg" alt="VetVitallist" width="150" height="44" />
+    </a>
+
+    <nav class="nav" data-nav aria-label="เมนูหลัก">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a class="nav__cta" href={`tel:${site.phone.replace(/-/g, '')}`}>
+        โทร {site.phone}
+      </a>
+    </nav>
+
+    <button
+      class="nav-toggle"
+      data-nav-toggle
+      aria-label="เปิดเมนู"
+      aria-expanded="false"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .header.is-scrolled {
+    box-shadow: 0 6px 24px rgba(8, 43, 73, 0.08);
+    border-color: rgba(8, 43, 73, 0.06);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 74px;
+  }
+  .header__brand img { height: 42px; width: auto; }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 1.9rem;
+  }
+  .nav a {
+    font-weight: 500;
+    color: var(--c-navy);
+    position: relative;
+    padding-block: 4px;
+  }
+  .nav a:not(.nav__cta)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: var(--c-teal);
+    transition: width 0.2s ease;
+  }
+  .nav a:not(.nav__cta):hover::after { width: 100%; }
+  .nav__cta {
+    background: var(--c-primary);
+    color: #fff !important;
+    padding: 0.55rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(0, 67, 113, 0.25);
+  }
+  .nav__cta:hover { background: var(--c-secondary); }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .nav-toggle span {
+    width: 26px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--c-navy);
+  }
+
+  @media (max-width: 900px) {
+    .nav-toggle { display: flex; }
+    .nav {
+      position: fixed;
+      inset: 74px 0 auto 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: #fff;
+      padding: 0.5rem 1.25rem 1.5rem;
+      box-shadow: 0 20px 40px rgba(8, 43, 73, 0.12);
+      transform: translateY(-140%);
+      transition: transform 0.28s ease;
+    }
+    .nav.is-open { transform: none; }
+    .nav a { padding: 0.9rem 0.25rem; border-bottom: 1px solid #eef3f7; }
+    .nav__cta { text-align: center; margin-top: 1rem; }
+    .nav a:not(.nav__cta)::after { display: none; }
+  }
+</style>

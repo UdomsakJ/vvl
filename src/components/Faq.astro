@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from 'astro:content';
+
+const entries = (await getCollection('faq')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const items = await Promise.all(
+  entries.map(async (e) => ({ data: e.data, Content: (await render(e)).Content }))
+);
+---
+
+<section class="section section--tint faq" id="faq">
+  <div class="container faq__inner">
+    <div class="section-head reveal">
+      <span class="eyebrow">Q &amp; A</span>
+      <h2 class="section-title">คำถามที่พบบ่อย</h2>
+    </div>
+
+    <div class="faq__list reveal">
+      {
+        items.map(({ data, Content }, i) => (
+          <details class="faq-item" open={i === 0}>
+            <summary class="faq-item__q">
+              <span>{data.question}</span>
+              <svg class="faq-item__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+              </svg>
+            </summary>
+            <div class="faq-item__a">
+              <Content />
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__inner { max-width: 840px; }
+  .faq__list { display: grid; gap: 0.9rem; }
+  .faq-item {
+    background: #fff;
+    border: 1px solid #e4eef6;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .faq-item__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--c-navy);
+    list-style: none;
+  }
+  .faq-item__q::-webkit-details-marker { display: none; }
+  .faq-item__icon { color: var(--c-teal); flex-shrink: 0; transition: transform 0.25s ease; }
+  .faq-item[open] .faq-item__icon { transform: rotate(45deg); }
+  .faq-item__a {
+    padding: 0 1.3rem 1.2rem;
+    color: var(--c-muted);
+  }
+  .faq-item__a :global(p) { margin-bottom: 0.6rem; }
+</style>

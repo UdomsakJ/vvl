@@ -1,0 +1,84 @@
+---
+import site from '../data/site.json';
+---
+
+<section class="section about" id="about">
+  <div class="container about__grid">
+    <div class="about__media reveal">
+      <img src="/images/about-1-filled.png" alt="ทีมสัตวแพทย์ VetVitallist" class="about__img about__img--1" width="500" height="600" loading="lazy" />
+      <img src="/images/about-2-filled.png" alt="ผลิตภัณฑ์ดูแลสัตว์เลี้ยง" class="about__img about__img--2" width="500" height="600" loading="lazy" />
+    </div>
+
+    <div class="about__body reveal">
+      <span class="eyebrow">เกี่ยวกับเรา</span>
+      <h2 class="section-title">VetVitallist</h2>
+      <p class="about__lead">{site.about}</p>
+
+      <div class="about__vm">
+        <div class="vm-card">
+          <h3>Vision</h3>
+          <p>{site.vision}</p>
+        </div>
+        <div class="vm-card">
+          <h3>Mission</h3>
+          <p>{site.mission}</p>
+        </div>
+      </div>
+
+      <p class="about__tag">
+        <strong>VetVitallist :</strong> {site.tagline}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 3.4rem;
+    align-items: center;
+  }
+  .about__media {
+    position: relative;
+    min-height: 460px;
+  }
+  .about__img {
+    position: absolute;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    object-fit: cover;
+    width: 74%;
+  }
+  .about__img--1 { top: 0; left: 0; z-index: 2; }
+  .about__img--2 { bottom: 0; right: 0; border: 6px solid #fff; }
+
+  .about__lead { color: var(--c-muted); margin-block: 1rem 1.8rem; }
+  .about__vm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+  }
+  .vm-card {
+    background: var(--c-alice);
+    border: 1px solid #e4eef6;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+  }
+  .vm-card h3 { color: var(--c-teal); font-size: 1.05rem; margin-bottom: 0.3rem; }
+  .vm-card p { font-size: 0.96rem; color: var(--c-muted); }
+  .about__tag {
+    border-left: 4px solid var(--c-teal);
+    padding-left: 1rem;
+    color: var(--c-navy);
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 860px) {
+    .about__grid { grid-template-columns: 1fr; gap: 2.4rem; }
+    .about__media { min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .about__img { position: static; width: 100%; }
+    .about__vm { grid-template-columns: 1fr; }
+  }
+</style>

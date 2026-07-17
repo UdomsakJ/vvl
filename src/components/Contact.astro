@@ -1,0 +1,125 @@
+---
+import site from '../data/site.json';
+
+const channels = [
+  { href: site.lineUrl, qr: '/images/qr-code-line.png', label: 'Line Official' },
+  { href: site.facebookVvlUrl, qr: '/images/qr-code-fb-vet.png', label: 'Facebook · VVL' },
+  { href: site.facebookSensotopUrl, qr: '/images/qr-code-fb-sen.png', label: 'Facebook · Sensotop' },
+];
+---
+
+<section class="section contact" id="contact">
+  <div class="container contact__grid">
+    <div class="contact__info reveal">
+      <span class="eyebrow">Contact</span>
+      <h2 class="section-title">ติดต่อเรา</h2>
+      <p class="contact__company">{site.companyNameEn}</p>
+      <p class="contact__addr">{site.addressEn}</p>
+      <hr class="contact__rule" />
+      <p class="contact__company">{site.companyNameTh}</p>
+      <p class="contact__addr">{site.addressTh}</p>
+
+      <ul class="contact__list">
+        <li>
+          <span class="contact__ico">✉</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        <li>
+          <span class="contact__ico">☎</span>
+          <a href={`tel:${site.phone.replace(/-/g, '')}`}>{site.phone}</a>
+        </li>
+        <li>
+          <span class="contact__ico">☏</span>
+          <a href={`tel:${site.phoneOffice.replace(/-/g, '')}`}>{site.phoneOffice}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="contact__channels reveal">
+      <p class="contact__channels-title">ช่องทางออนไลน์</p>
+      <div class="contact__cards">
+        {
+          channels.map((c) => (
+            <a class="qr-card" href={c.href} target="_blank" rel="noopener">
+              <img class="qr-card__qr" src={c.qr} alt={c.label} width="150" height="150" loading="lazy" />
+              <span class="qr-card__label">{c.label}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .contact__company { font-weight: 700; color: var(--c-navy); margin-top: 0.9rem; }
+  .contact__addr { color: var(--c-muted); }
+  .contact__rule { border: 0; border-top: 1px solid #e4eef6; margin-block: 1.4rem; }
+  .contact__list { list-style: none; padding: 0; margin-top: 1.6rem; display: grid; gap: 0.8rem; }
+  .contact__list li { display: flex; align-items: center; gap: 0.7rem; font-weight: 500; }
+  .contact__ico {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--c-sky-soft);
+    color: var(--c-primary);
+    flex-shrink: 0;
+  }
+
+  .contact__channels-title {
+    font-weight: 700;
+    color: var(--c-navy);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .contact__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+  .qr-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    background: #fff;
+    border: 1px solid #e4eef6;
+    border-radius: 16px;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .qr-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .qr-card__qr {
+    width: 100%;
+    max-width: 150px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  .qr-card__label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--c-navy);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 860px) {
+    .contact__grid { grid-template-columns: 1fr; }
+    .contact__channels { max-width: 520px; }
+  }
+  @media (max-width: 520px) {
+    .contact__cards { grid-template-columns: 1fr; max-width: 240px; margin-inline: auto; }
+  }
+</style>

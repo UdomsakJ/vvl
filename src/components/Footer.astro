@@ -1,0 +1,48 @@
+---
+import site from '../data/site.json';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <img src="/images/vvl-logo3.svg" alt="VetVitallist" width="160" height="48" />
+      <p>{site.tagline}</p>
+    </div>
+
+    <div class="footer__social">
+      <a href={site.lineUrl} target="_blank" rel="noopener" aria-label="Line">Line</a>
+      <a href={site.facebookVvlUrl} target="_blank" rel="noopener" aria-label="Facebook VVL">Facebook</a>
+      <a href={`mailto:${site.email}`} aria-label="Email">Email</a>
+    </div>
+  </div>
+  <div class="footer__bar">
+    <div class="container">
+      © {year} {site.companyNameEn} | All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--c-navy); color: #cfe0ee; }
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 2.6rem;
+    flex-wrap: wrap;
+  }
+  .footer__brand img { height: 44px; width: auto; filter: brightness(0) invert(1); margin-bottom: 0.5rem; }
+  .footer__brand p { color: #9fbdd6; font-size: 0.95rem; }
+  .footer__social { display: flex; gap: 1.4rem; }
+  .footer__social a { font-weight: 500; }
+  .footer__social a:hover { color: #fff; }
+  .footer__bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-block: 1.1rem;
+    font-size: 0.85rem;
+    color: #8fb0cc;
+    text-align: center;
+  }
+</style>

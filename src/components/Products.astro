@@ -1,0 +1,172 @@
+---
+import { getCollection } from 'astro:content';
+
+const products = (await getCollection('products')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="section section--tint" id="products">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">ผลิตภัณฑ์ของบริษัท</span>
+      <h2 class="section-title">ผลิตภัณฑ์ดูแลผิวหนังและสุขภาพสัตว์เลี้ยง</h2>
+      <p>ครบทุกกลุ่มผลิตภัณฑ์ คิดค้นและพัฒนาโดยทีมสัตวแพทย์</p>
+    </div>
+
+    <nav class="product-nav reveal" aria-label="กลุ่มผลิตภัณฑ์">
+      {
+        products
+          .filter((p) => p.data.logo)
+          .map((p) => (
+            <a class={`product-nav__card product-nav__card--${p.data.theme}`} href={`#${p.id}`}>
+              <img src={p.data.logo} alt={p.data.title} width="260" height="98" />
+            </a>
+          ))
+      }
+    </nav>
+
+    <div class="products">
+      {
+        products.map((p, i) => (
+          <article class={`product product--${p.data.theme} reveal`} id={p.id}>
+            <div class="product__intro">
+              <div class="product__badges">
+                {p.data.badges.map((b) => (
+                  <img src={b} alt="" width="56" height="56" loading="lazy" />
+                ))}
+              </div>
+              <h3 class="product__name">{p.data.title}</h3>
+              {p.data.subtitle && <p class="product__subtitle">{p.data.subtitle}</p>}
+              <p class="product__desc">{p.data.intro}</p>
+              {p.data.brochure && (
+                <a class="btn btn--ghost product__brochure" href={p.data.brochure} target="_blank" rel="noopener">
+                  ดาวน์โหลดแผ่นพับ
+                </a>
+              )}
+            </div>
+
+            {p.data.heroImage && (
+              <div class="product__hero">
+                <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+              </div>
+            )}
+
+            {p.data.items.length > 0 && (
+              <div class="product__items">
+                {p.data.items.map((it) => (
+                  <div class="item-card">
+                    {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
+                    {it.size && <span class="item-card__size">{it.size}</span>}
+                    <h4 class="item-card__name">{it.name}</h4>
+                    <p class="item-card__desc">{it.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- Quick nav (คลิกเลื่อนไปแต่ละกลุ่ม) ---------- */
+  .product-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+  .product-nav__card {
+    --accent: var(--c-primary);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem 1.25rem;
+    background: #fff;
+    border: 1px solid #e6eef5;
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+  .product-nav__card--blue { --accent: var(--c-primary); }
+  .product-nav__card--pink { --accent: #f06880; background: #f06880; border-color: #f06880; }
+  .product-nav__card--yellow { --accent: var(--c-gold); }
+  .product-nav__card img { max-height: 74px; width: auto; object-fit: contain; }
+  .product-nav__card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 34px rgba(8, 43, 73, 0.16);
+    border-color: var(--accent);
+  }
+
+  .products { display: grid; gap: 2.4rem; }
+  .product {
+    scroll-margin-top: 96px;
+    background: #fff;
+    border-radius: 26px;
+    padding: clamp(1.6rem, 4vw, 3rem);
+    box-shadow: var(--shadow-sm);
+    border-top: 6px solid var(--accent, var(--c-primary));
+  }
+  .product--blue { --accent: var(--c-primary); }
+  .product--pink { --accent: var(--c-pink); }
+  .product--yellow { --accent: var(--c-gold); }
+
+  .product__badges { display: flex; gap: 0.7rem; margin-bottom: 1rem; }
+  .product__badges img { width: 54px; height: auto; }
+  .product__name {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    color: var(--accent);
+  }
+  .product__subtitle { font-weight: 700; color: var(--c-navy); margin-top: 0.3rem; }
+  .product__desc { color: var(--c-muted); margin-block: 0.9rem 1.4rem; max-width: 62ch; }
+  .product__brochure { margin-bottom: 1.6rem; }
+
+  .product__hero {
+    background: linear-gradient(180deg, var(--c-alice), #fff);
+    border-radius: 18px;
+    padding: 1.4rem;
+    margin-bottom: 1.8rem;
+    text-align: center;
+  }
+  .product__hero img { margin-inline: auto; max-height: 340px; width: auto; }
+
+  .product__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+  .item-card {
+    background: var(--c-alice);
+    border: 1px solid #e6eef5;
+    border-radius: 16px;
+    padding: 1.2rem;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); }
+  .item-card__img {
+    height: 130px;
+    width: auto;
+    margin: 0 auto 0.9rem;
+    object-fit: contain;
+  }
+  .item-card__size {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.15rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+  }
+  .item-card__name { font-size: 1rem; color: var(--c-navy); margin-bottom: 0.4rem; }
+  .item-card__desc { font-size: 0.9rem; color: var(--c-muted); }
+
+  @media (max-width: 520px) {
+    .product__items { grid-template-columns: 1fr; }
+    .product-nav { grid-template-columns: 1fr; gap: 0.9rem; }
+    .product-nav__card { padding: 1.2rem; }
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = new Intl.DateTimeFormat('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout title={`${post.data.title} | VetVitallist`} description={post.data.excerpt}>
+  <Header />
+  <main class="post">
+    <article class="container post__inner">
+      <a class="post__back" href="/#news">← กลับหน้าข่าวสาร</a>
+      <time class="post__date">{fmt.format(post.data.date)}</time>
+      <h1 class="post__title">{post.data.title}</h1>
+      {post.data.image && (
+        <img class="post__cover" src={post.data.image} alt={post.data.title} width="900" height="900" />
+      )}
+      <div class="post__body">
+        <Content />
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .post { padding-block: clamp(40px, 6vw, 72px); }
+  .post__inner { max-width: 760px; }
+  .post__back { color: var(--c-primary); font-weight: 700; }
+  .post__date { display: block; color: var(--c-teal); font-weight: 700; margin-top: 1.4rem; }
+  .post__title { font-size: clamp(1.7rem, 4vw, 2.5rem); margin-block: 0.5rem 1.6rem; }
+  .post__cover { width: 100%; max-width: 460px; border-radius: 18px; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+  .post__body :global(p) { margin-bottom: 1.1rem; }
+  .post__body :global(ul) { margin-bottom: 1.1rem; display: grid; gap: 0.4rem; }
+  .post__body :global(strong) { color: var(--c-navy); }
+</style>

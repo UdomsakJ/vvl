@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import site from '../data/site.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'VetVitallist – ผลิตภัณฑ์ดูแลผิวหนังและสุขภาพสัตว์เลี้ยง โดยทีมสัตวแพทย์',
+  description = 'VetVitallist (VVL) ผู้เชี่ยวชาญเวชภัณฑ์สัตว์เลี้ยงกว่า 10 ปี ผลิตภัณฑ์ Sensotop, Aller Spot-On และ VC.AllerCare ดูแลแผลและโรคผิวหนังสำหรับสัตว์เลี้ยง',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/images/cropped-wvvl-only-mini-box.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="th_TH" />
+    <meta name="theme-color" content="#004371" />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Scroll reveal
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+      // Mobile nav toggle
+      const toggle = document.querySelector('[data-nav-toggle]');
+      const nav = document.querySelector('[data-nav]');
+      toggle?.addEventListener('click', () => {
+        const open = nav?.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(!!open));
+      });
+      nav?.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => nav.classList.remove('is-open'))
+      );
+
+      // Header shadow on scroll
+      const header = document.querySelector('[data-header]');
+      const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 20);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+# ---------------------------------------------------------------------------
+# Sveltia CMS config — ระบบจัดการเนื้อหาเว็บไซต์ VetVitallist
+# แก้ไขผ่านเบราว์เซอร์ที่ URL:  https://<โดเมนของคุณ>/admin/
+#
+# backend ด้านล่างตั้งค่าให้ commit การแก้ไขกลับเข้า Git repository โดยตรง
+# *** เปลี่ยน "your-org/your-repo" ให้เป็นชื่อ repo จริงบน GitHub ก่อนใช้งาน ***
+# วิธีตั้งค่า OAuth ดูได้ในไฟล์ README.md หัวข้อ "การเปิดใช้งานระบบจัดการเนื้อหา"
+# ---------------------------------------------------------------------------
+backend:
+  name: github
+  repo: your-org/your-repo
+  branch: main
+
+# โฟลเดอร์เก็บรูปที่อัปโหลดผ่าน CMS
+media_folder: "public/images"
+public_folder: "/images"
+
+# ภาษาไทยเป็นค่าเริ่มต้นของหน้าจอ
+locale: th
+
+collections:
+  # ---------- ผลิตภัณฑ์ ----------
+  - name: products
+    label: "ผลิตภัณฑ์"
+    label_singular: "ผลิตภัณฑ์"
+    folder: "src/content/products"
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{fields.title | lower}}"
+    summary: "{{title}}"
+    fields:
+      - { name: title, label: "ชื่อผลิตภัณฑ์", widget: string }
+      - { name: subtitle, label: "หัวข้อรอง", widget: string, required: false }
+      - { name: intro, label: "คำอธิบาย", widget: text }
+      - { name: order, label: "ลำดับการแสดง", widget: number, value_type: int, default: 1 }
+      - name: theme
+        label: "โทนสี"
+        widget: select
+        options:
+          - { label: "น้ำเงิน (Sensotop)", value: blue }
+          - { label: "ชมพู (Aller Spot-On)", value: pink }
+          - { label: "เหลือง (VC.AllerCare)", value: yellow }
+        default: blue
+      - name: badges
+        label: "โลโก้/ตราสัญลักษณ์"
+        widget: list
+        required: false
+        field: { name: image, label: "รูป", widget: image }
+      - { name: logo, label: "โลโก้แบรนด์ (แถบลิงก์ด้านบน)", widget: image, required: false }
+      - { name: heroImage, label: "รูปหลักของผลิตภัณฑ์", widget: image, required: false }
+      - { name: brochure, label: "ไฟล์แผ่นพับ (รูปหรือ PDF)", widget: file, required: false }
+      - name: items
+        label: "รายการสินค้าย่อย"
+        label_singular: "สินค้า"
+        widget: list
+        required: false
+        summary: "{{fields.name}}"
+        fields:
+          - { name: name, label: "ชื่อสินค้า", widget: string }
+          - { name: size, label: "ขนาด", widget: string, required: false }
+          - { name: description, label: "รายละเอียด", widget: text }
+          - { name: image, label: "รูปสินค้า", widget: image, required: false }
+
+  # ---------- ข่าวสารและกิจกรรม ----------
+  - name: posts
+    label: "ข่าวสารและกิจกรรม"
+    label_singular: "บทความ"
+    folder: "src/content/posts"
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: "หัวข้อ", widget: string }
+      - { name: date, label: "วันที่", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { name: image, label: "รูปหน้าปก", widget: image, required: false }
+      - { name: excerpt, label: "คำโปรย (แสดงในหน้ารวมข่าว)", widget: text, required: false }
+      - { name: body, label: "เนื้อหา", widget: markdown }
+
+  # ---------- คำถามที่พบบ่อย ----------
+  - name: faq
+    label: "คำถามที่พบบ่อย"
+    label_singular: "คำถาม"
+    folder: "src/content/faq"
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{fields.order}}-{{slug}}"
+    summary: "{{question}}"
+    fields:
+      - { name: question, label: "คำถาม", widget: string }
+      - { name: order, label: "ลำดับ", widget: number, value_type: int, default: 1 }
+      - { name: body, label: "คำตอบ", widget: markdown }
+
+  # ---------- ข้อมูลติดต่อ / ตั้งค่าเว็บไซต์ ----------
+  - name: settings
+    label: "ตั้งค่าเว็บไซต์"
+    editor: { preview: false }
+    files:
+      - name: site
+        label: "ข้อมูลบริษัทและการติดต่อ"
+        file: "src/data/site.json"
+        fields:
+          - { name: companyNameTh, label: "ชื่อบริษัท (ไทย)", widget: string }
+          - { name: companyNameEn, label: "ชื่อบริษัท (อังกฤษ)", widget: string }
+          - { name: tagline, label: "สโลแกน", widget: string }
+          - { name: phone, label: "เบอร์โทร (มือถือ)", widget: string }
+          - { name: phoneOffice, label: "เบอร์โทร (ออฟฟิศ)", widget: string }
+          - { name: email, label: "อีเมล", widget: string }
+          - { name: addressTh, label: "ที่อยู่ (ไทย)", widget: text }
+          - { name: addressEn, label: "ที่อยู่ (อังกฤษ)", widget: text }
+          - { name: lineUrl, label: "ลิงก์ Line", widget: string }
+          - { name: facebookVvlUrl, label: "ลิงก์ Facebook VVL", widget: string }
+          - { name: facebookSensotopUrl, label: "ลิงก์ Facebook Sensotop", widget: string }
+          - { name: about, label: "ข้อความเกี่ยวกับเรา", widget: text }
+          - { name: vision, label: "Vision", widget: string }
+          - { name: mission, label: "Mission", widget: string }
+          - name: features
+            label: "จุดเด่นบริการ (แถบเลื่อน)"
+            widget: list
+            fields:
+              - { name: icon, label: "ไอคอน", widget: image }
+              - { name: label, label: "ข้อความ", widget: string }

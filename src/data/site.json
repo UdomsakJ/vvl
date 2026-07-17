@@ -1,0 +1,24 @@
+{
+  "companyNameTh": "บริษัท เวทไวทัลลิสท์ จำกัด",
+  "companyNameEn": "VetVitallist Co., Ltd.",
+  "tagline": "Caring for pets, Enhancing lives",
+  "phone": "094-269-4426",
+  "phoneOffice": "02-017-5230",
+  "email": "contact@vetvitallist.com",
+  "addressTh": "8 ซอยพรีเมียร์ 1 ถนนศรีนครินทร์ แขวงหนองบอน เขตประเวศ กรุงเทพมหานคร 10250",
+  "addressEn": "Asset Nine, 8 Premier 1 Alley, Lane 8, Nong Bon, Prawet, Bangkok 10250",
+  "lineUrl": "https://line.me/R/ti/p/@143flzjx",
+  "facebookVvlUrl": "https://www.facebook.com/share/1AisbPfsS7/?mibextid=wwXIfr",
+  "facebookSensotopUrl": "https://www.facebook.com/share/1EeAbH5qd9/?mibextid=wwXIfr",
+  "about": "VetVitallist หรือ VVL ก่อตั้งขึ้นโดยทีมสัตว์แพทย์ ผู้มีประสบการณ์ในธุรกิจเวชภัณฑ์สัตว์เลี้ยง มากกว่า 10 ปี เรามีความเชี่ยวชาญในธุรกิจสัตว์เลี้ยง และมุ่งมั่นที่จะใช้ประสบการณ์ และความรู้ทางสัตวแพทย์ ในการพัฒนาผลิตภัณฑ์และบริการที่มีคุณภาพ เพื่อช่วยส่งเสริมคุณภาพชีวิตของคนและสัตว์เลี้ยง",
+  "vision": "Harmonize Vet expertise and Life for their health",
+  "mission": "To provide High quality veterinary care services to enhance the Well being of life",
+  "features": [
+    { "icon": "/images/partnership.svg", "label": "Exclusive Partnerships" },
+    { "icon": "/images/star.svg", "label": "OEM/ODM Expertise" },
+    { "icon": "/images/package.svg", "label": "Comprehensive Product Range" },
+    { "icon": "/images/plane.svg", "label": "Global Logistics" },
+    { "icon": "/images/quality.svg", "label": "Commitment to Quality" },
+    { "icon": "/images/like.svg", "label": "Client-Focused Services" }
+  ]
+}
