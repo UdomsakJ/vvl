@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------
 backend:
   name: github
-  repo: your-org/your-repo
+  repo: UdomsakJ/vvl
   branch: main
 
 # โฟลเดอร์เก็บรูปที่อัปโหลดผ่าน CMS
