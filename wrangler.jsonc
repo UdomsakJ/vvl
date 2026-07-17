@@ -1,0 +1,9 @@
+{
+  // ตั้งค่าสำหรับ deploy เว็บ static (Astro) ขึ้น Cloudflare Workers ผ่าน "npx wrangler deploy"
+  "name": "vvl",
+  "compatibility_date": "2026-07-17",
+  // โฟลเดอร์ผลลัพธ์จาก "npm run build" ของ Astro
+  "assets": {
+    "directory": "./dist"
+  }
+}
