@@ -85,6 +85,12 @@ const products = (await getCollection('products')).sort(
     const next = slider.querySelector<HTMLButtonElement>('.slider__btn--next')!;
     const step = () => (track.querySelector<HTMLElement>('.item-card')?.offsetWidth ?? 280) + 19;
 
+    // การ์ดพอดีหน้าจอ ไม่ต้องเลื่อน: ซ่อนปุ่ม/ไม่เลื่อนอัตโนมัติ และจัดกึ่งกลาง
+    if (track.scrollWidth <= track.clientWidth + 2) {
+      slider.classList.add('is-static');
+      return;
+    }
+
     const atStart = () => track.scrollLeft <= 2;
     const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
 
@@ -152,7 +158,7 @@ const products = (await getCollection('products')).sort(
     border-color: var(--accent);
   }
 
-  .products { display: grid; gap: 2.4rem; }
+  .products { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.4rem; }
   .product {
     scroll-margin-top: 96px;
     background: var(--bg);
@@ -224,6 +230,8 @@ const products = (await getCollection('products')).sort(
     transition: opacity 0.18s ease, transform 0.18s ease;
   }
   .slider__btn:hover { transform: scale(1.08); }
+  .is-static .slider__btn { display: none; }
+  .is-static .product__items { justify-content: center; }
   .slider__btn--prev { left: -10px; }
   .slider__btn--next { right: -10px; }
   .item-card {
