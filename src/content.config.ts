@@ -20,7 +20,9 @@ const products = defineCollection({
           size: z.string().optional(),
           description: z.string(),
           image: z.string().optional(),
+          banner: z.string().optional(),
           icons: z.string().optional(),
+          extras: z.array(z.string()).default([]),
         })
       )
       .default([]),

@@ -61,7 +61,13 @@ collections:
           - { name: size, label: "ขนาด", widget: string, required: false }
           - { name: description, label: "รายละเอียด", widget: text }
           - { name: image, label: "รูปสินค้า", widget: image, required: false }
-          - { name: icons, label: "รูปไอคอนจุดเด่น (แถบ 4 ไอคอน)", widget: image, required: false }
+          - { name: banner, label: "รูปแบนเนอร์ชื่อสินค้า (ใต้รูปสินค้า)", widget: image, required: false }
+          - { name: icons, label: "รูปไอคอนจุดเด่น", widget: image, required: false }
+          - name: extras
+            label: "รูปเพิ่มเติมท้ายการ์ด (เช่น ขนาดยา)"
+            widget: list
+            required: false
+            field: { name: image, label: "รูป", widget: image }
 
   # ---------- ข่าวสารและกิจกรรม ----------
   - name: posts

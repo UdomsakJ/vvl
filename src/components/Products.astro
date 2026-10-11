@@ -58,10 +58,12 @@ const products = (await getCollection('products')).sort(
                   {p.data.items.map((it) => (
                     <div class="item-card">
                       {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
+                      {it.banner && <img class="item-card__banner" src={it.banner} alt="" loading="lazy" />}
                       {it.size && <span class="item-card__size">{it.size}</span>}
                       <h4 class="item-card__name">{it.name}</h4>
                       <p class="item-card__desc">{it.description}</p>
                       {it.icons && <img class="item-card__icons" src={it.icons} alt="" loading="lazy" />}
+                      {it.extras.map((x) => <img class="item-card__extra" src={x} alt="" loading="lazy" />)}
                     </div>
                   ))}
                 </div>
@@ -153,24 +155,36 @@ const products = (await getCollection('products')).sort(
   .products { display: grid; gap: 2.4rem; }
   .product {
     scroll-margin-top: 96px;
-    background: #fff;
+    background: var(--bg);
+    color: var(--on);
     border-radius: 26px;
     padding: clamp(1.6rem, 4vw, 3rem);
     box-shadow: var(--shadow-sm);
-    border-top: 6px solid var(--accent, var(--c-primary));
   }
-  .product--blue { --accent: var(--c-primary); }
-  .product--pink { --accent: var(--c-pink); }
-  .product--yellow { --accent: var(--c-gold); }
+  .product--blue {
+    --accent: var(--c-primary);
+    --bg: linear-gradient(180deg, #3f87bd 0%, #a6cfeb 100%);
+    --on: #fff;
+  }
+  .product--pink {
+    --accent: var(--c-pink);
+    --bg: linear-gradient(180deg, #ff9fa0 0%, #fde1e5 100%);
+    --on: var(--c-navy);
+  }
+  .product--yellow {
+    --accent: var(--c-gold);
+    --bg: linear-gradient(180deg, #f5c93f 0%, #fff1c2 100%);
+    --on: var(--c-navy);
+  }
 
   .product__badges { display: flex; gap: 0.7rem; margin-bottom: 1rem; }
   .product__badges img { width: 54px; height: auto; }
   .product__name {
     font-size: clamp(1.5rem, 3vw, 2.1rem);
-    color: var(--accent);
+    color: var(--on);
   }
-  .product__subtitle { font-weight: 700; color: var(--c-navy); margin-top: 0.3rem; }
-  .product__desc { color: var(--c-muted); margin-block: 0.9rem 1.4rem; max-width: 62ch; }
+  .product__subtitle { font-weight: 700; color: var(--on); margin-top: 0.3rem; }
+  .product__desc { color: var(--on); opacity: 0.92; margin-block: 0.9rem 1.4rem; max-width: 62ch; }
   .product__brochure { margin-bottom: 1.6rem; }
 
   .product__hero {
@@ -242,6 +256,8 @@ const products = (await getCollection('products')).sort(
   }
   .item-card__name { order: 2; font-size: 1.15rem; font-weight: 700; color: var(--c-navy); margin-bottom: 0.7rem; }
   .item-card__desc { order: 3; font-size: 0.92rem; line-height: 1.9; color: var(--c-muted); text-align: left; }
+  .item-card__banner { order: 0; width: 100%; height: auto; margin-bottom: 1rem; }
+  .item-card__extra { order: 5; width: 100%; height: auto; }
   .item-card__icons { order: 4; width: 100%; height: auto; margin-top: auto; padding-top: 1.4rem; }
 
   @media (max-width: 520px) {
