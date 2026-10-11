@@ -11,6 +11,7 @@ badges:
   - /images/veterinarian-logo.png
   - /images/organic-hops-extract-logo.png
 logo: /images/wvvl-only-main-box-set-02-1.png
+headerImage: /images/wvvl-only-pkg-sst-set-18.png
 heroImage: /images/vwvvl-fonly-pkg-sst-group-set-01-01.png
 brochure: /images/onepage-oinline-sst-2026-blue-01.jpg
 items:

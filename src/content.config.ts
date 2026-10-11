@@ -11,6 +11,7 @@ const products = defineCollection({
     theme: z.enum(['blue', 'pink', 'yellow']).default('blue'),
     badges: z.array(z.string()).default([]),
     logo: z.string().optional(),
+    headerImage: z.string().optional(),
     heroImage: z.string().optional(),
     brochure: z.string().optional(),
     items: z

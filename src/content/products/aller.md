@@ -11,6 +11,7 @@ badges:
   - /images/veterinarian-logo.png
   - /images/organic-hops-extract-logo.png
 logo: /images/wvvl-only-main-box-set-03.png
+headerImage: /images/tools-web-aller-spot-on-03.png
 heroImage: /images/tools-web-aller-spot-on-01.png
 brochure: /images/bochur-online-sst-pink-v2-01.jpg
 items:

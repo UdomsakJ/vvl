@@ -26,55 +26,65 @@ const products = (await getCollection('products')).sort(
       }
     </nav>
 
-    <div class="products">
-      {
-        products.map((p, i) => (
-          <article class={`product product--${p.data.theme} reveal`} id={p.id}>
-            <div class="product__intro">
+  </div>
+
+  <div class="products">
+    {
+      products.map((p) => (
+        <article class={`product product--${p.data.theme}`} id={p.id}>
+          <div class="product__band product__band--intro">
+            <div class="container product__intro reveal">
+              {p.data.headerImage && (
+                <img class="product__header" src={p.data.headerImage} alt={p.data.title} />
+              )}
+              {p.data.heroImage && (
+                <img class="product__hero" src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+              )}
+              <h3 class="product__name">
+                <span class="sr-only">{p.data.title}: </span>
+                {p.data.subtitle ?? p.data.title}
+              </h3>
+              <p class="product__desc">{p.data.intro}</p>
               <div class="product__badges">
                 {p.data.badges.map((b) => (
-                  <img src={b} alt="" width="56" height="56" loading="lazy" />
+                  <img src={b} alt="" width="72" height="72" loading="lazy" />
                 ))}
               </div>
-              <h3 class="product__name">{p.data.title}</h3>
-              {p.data.subtitle && <p class="product__subtitle">{p.data.subtitle}</p>}
-              <p class="product__desc">{p.data.intro}</p>
               {p.data.brochure && (
                 <a class="btn btn--ghost product__brochure" href={p.data.brochure} target="_blank" rel="noopener">
                   ดาวน์โหลดแผ่นพับ
                 </a>
               )}
             </div>
+          </div>
 
-            {p.data.heroImage && (
-              <div class="product__hero">
-                <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
-              </div>
-            )}
-
-            {p.data.items.length > 0 && (
-              <div class="slider">
-                <div class="product__items" tabindex="0" aria-label={`สินค้าในกลุ่ม ${p.data.title}`}>
-                  {p.data.items.map((it) => (
-                    <div class="item-card">
-                      {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
-                      {it.banner && <img class="item-card__banner" src={it.banner} alt="" loading="lazy" />}
-                      {it.size && <span class="item-card__size">{it.size}</span>}
-                      <h4 class="item-card__name">{it.name}</h4>
-                      <p class="item-card__desc">{it.description}</p>
-                      {it.icons && <img class="item-card__icons" src={it.icons} alt="" loading="lazy" />}
-                      {it.extras.map((x) => <img class="item-card__extra" src={x} alt="" loading="lazy" />)}
-                    </div>
-                  ))}
+          {p.data.items.length > 0 && (
+            <div class="product__band product__band--list">
+              <div class="container reveal">
+                <h3 class="product__products">Products</h3>
+                <div class="slider">
+                  <div class="product__items" tabindex="0" aria-label={`สินค้าในกลุ่ม ${p.data.title}`}>
+                    {p.data.items.map((it) => (
+                      <div class="item-card">
+                        {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
+                        {it.banner && <img class="item-card__banner" src={it.banner} alt="" loading="lazy" />}
+                        {it.size && <span class="item-card__size">{it.size}</span>}
+                        <h4 class="item-card__name">{it.name}</h4>
+                        <p class="item-card__desc">{it.description}</p>
+                        {it.icons && <img class="item-card__icons" src={it.icons} alt="" loading="lazy" />}
+                        {it.extras.map((x) => <img class="item-card__extra" src={x} alt="" loading="lazy" />)}
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" class="slider__btn slider__btn--prev" aria-label="ก่อนหน้า">‹</button>
+                  <button type="button" class="slider__btn slider__btn--next" aria-label="ถัดไป">›</button>
                 </div>
-                <button type="button" class="slider__btn slider__btn--prev" aria-label="ก่อนหน้า">‹</button>
-                <button type="button" class="slider__btn slider__btn--next" aria-label="ถัดไป">›</button>
               </div>
-            )}
-          </article>
-        ))
-      }
-    </div>
+            </div>
+          )}
+        </article>
+      ))
+    }
   </div>
 </section>
 
@@ -158,49 +168,95 @@ const products = (await getCollection('products')).sort(
     border-color: var(--accent);
   }
 
-  .products { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.4rem; }
-  .product {
-    scroll-margin-top: 96px;
-    background: var(--bg);
-    color: var(--on);
-    border-radius: 26px;
-    padding: clamp(1.6rem, 4vw, 3rem);
-    box-shadow: var(--shadow-sm);
+  #products { padding-bottom: 0; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
   }
+
+  .products { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: 3rem; }
+  .product { scroll-margin-top: 96px; }
+  .product__band {
+    position: relative;
+    isolation: isolate;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+  }
+  /* รูปพื้นหลังโปร่งแสงซ้อนบนสีพื้น เหมือนเว็บเดิม */
+  .product__band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--bg-img, none) var(--bg-pos, bottom center) / cover no-repeat;
+    opacity: var(--bg-op, 1);
+  }
+
+  /* ----- Sensotop (blue): พื้นฟ้าน้ำเงินเกรนละเอียด ----- */
   .product--blue {
-    --accent: var(--c-primary);
-    --bg: linear-gradient(180deg, #3f87bd 0%, #a6cfeb 100%);
     --on: #fff;
+    --title: #fff;
+    --btn-bg: #fff;
+    --btn-fg: var(--c-primary);
+    --card-bg: linear-gradient(180deg, #fff 0%, #e4f1fa 100%);
   }
-  .product--pink {
-    --accent: var(--c-pink);
-    --bg: linear-gradient(180deg, #ff9fa0 0%, #fde1e5 100%);
-    --on: var(--c-navy);
-  }
-  .product--yellow {
-    --accent: var(--c-gold);
-    --bg: linear-gradient(180deg, #f5c93f 0%, #fff1c2 100%);
-    --on: var(--c-navy);
-  }
+  .product--blue .product__band { background: #005381; }
+  .product--blue .product__band--intro { --bg-img: url('/images/bg-sensotop-intro.webp'); --bg-op: 0.82; }
+  .product--blue .product__band--list { --bg-img: url('/images/bg-sensotop-slider.webp'); --bg-op: 0.82; --bg-pos: top left; }
 
-  .product__badges { display: flex; gap: 0.7rem; margin-bottom: 1rem; }
-  .product__badges img { width: 54px; height: auto; }
+  /* ----- Aller Spot-On (pink): พื้นชมพูเมฆน้ำ ----- */
+  .product--pink {
+    --on: #005487;
+    --title: #005487;
+    --btn-bg: #ee94a0;
+    --btn-fg: #fff;
+    --card-bg: linear-gradient(180deg, #fff 0%, #ffe6ea 100%);
+  }
+  .product--pink .product__band--intro {
+    background: linear-gradient(#ff5182, #fca7a7);
+    --bg-img: url('/images/bg-aller-intro.webp');
+    --bg-op: 0.67;
+  }
+  .product--pink .product__band--list { background: linear-gradient(#ff9f9f, #ffedf0); }
+
+  /* ----- VC.AllerCare (yellow theme): พื้นชมพูอ่อน หัวข้อเทา ----- */
+  .product--yellow {
+    --on: #6f7073;
+    --title: #ff7e94;
+    --btn-bg: #ff7e94;
+    --btn-fg: #fff;
+    --card-bg: linear-gradient(180deg, #fff 0%, #fbe4ea 100%);
+  }
+  .product--yellow .product__band--intro {
+    background: linear-gradient(#fdeef3, #f8c1c9);
+    --bg-img: url('/images/bg-vc-intro.webp');
+    --bg-op: 0.9;
+  }
+  .product--yellow .product__band--list { background: linear-gradient(#f1f1f1, #f8cad6); }
+
+  .product__intro { text-align: center; max-width: 820px; }
+  .product__header { margin: 0 auto 1.4rem; width: min(100%, 440px); height: auto; }
+  .product__hero {
+    margin: 0 auto 1.8rem;
+    max-height: 420px;
+    width: auto;
+    filter: drop-shadow(0 14px 22px rgba(8, 43, 73, 0.25));
+  }
   .product__name {
-    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    line-height: 1.4;
     color: var(--on);
   }
-  .product__subtitle { font-weight: 700; color: var(--on); margin-top: 0.3rem; }
-  .product__desc { color: var(--on); opacity: 0.92; margin-block: 0.9rem 1.4rem; max-width: 62ch; }
-  .product__brochure { margin-bottom: 1.6rem; }
+  .product__desc { color: var(--on); margin: 1rem auto 1.4rem; }
+  .product__badges { display: flex; justify-content: center; gap: 0.9rem; margin-bottom: 1.4rem; }
+  .product__badges img { width: 72px; height: auto; }
+  .product__brochure { color: var(--on); border-color: var(--on); }
+  .product__brochure:hover { background: var(--on); color: var(--btn-bg); }
 
-  .product__hero {
-    background: linear-gradient(180deg, var(--c-alice), #fff);
-    border-radius: 18px;
-    padding: 1.4rem;
-    margin-bottom: 1.8rem;
-    text-align: center;
+  .product__products {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    color: var(--title);
+    margin-bottom: 1.4rem;
   }
-  .product__hero img { margin-inline: auto; max-height: 340px; width: auto; }
 
   .slider { position: relative; }
   .product__items {
@@ -221,8 +277,8 @@ const products = (await getCollection('products')).sort(
     height: 44px;
     border-radius: 50%;
     border: 0;
-    background: var(--accent);
-    color: #fff;
+    background: var(--btn-bg, var(--accent));
+    color: var(--btn-fg, #fff);
     font-size: 1.8rem;
     line-height: 1;
     cursor: pointer;
@@ -239,7 +295,7 @@ const products = (await getCollection('products')).sort(
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, #fff 0%, #e8f3fb 100%);
+    background: var(--card-bg);
     border: 0;
     border-radius: 26px;
     padding: 2rem 1.6rem 1.6rem;

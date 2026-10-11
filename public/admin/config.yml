@@ -48,6 +48,7 @@ collections:
         required: false
         field: { name: image, label: "รูป", widget: image }
       - { name: logo, label: "โลโก้แบรนด์ (แถบลิงก์ด้านบน)", widget: image, required: false }
+      - { name: headerImage, label: "รูปหัวผลิตภัณฑ์ (โลโก้บนพื้นหลังสี)", widget: image, required: false }
       - { name: heroImage, label: "รูปหลักของผลิตภัณฑ์", widget: image, required: false }
       - { name: brochure, label: "ไฟล์แผ่นพับ (รูปหรือ PDF)", widget: file, required: false }
       - name: items

@@ -11,6 +11,7 @@ theme: yellow
 badges:
   - /images/veterinarian-logo.png
 logo: /images/wvvl-only-main-box-set-04.png
+headerImage: /images/wvvl-only-pkg-aller-set-01.png
 heroImage: /images/tools-web-aller-spot-on-05.png
 brochure: /images/bochur-online-sst-pink-v2-02.jpg
 items:
