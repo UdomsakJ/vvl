@@ -53,15 +53,20 @@ const products = (await getCollection('products')).sort(
             )}
 
             {p.data.items.length > 0 && (
-              <div class="product__items">
-                {p.data.items.map((it) => (
-                  <div class="item-card">
-                    {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
-                    {it.size && <span class="item-card__size">{it.size}</span>}
-                    <h4 class="item-card__name">{it.name}</h4>
-                    <p class="item-card__desc">{it.description}</p>
-                  </div>
-                ))}
+              <div class="slider">
+                <div class="product__items" tabindex="0" aria-label={`สินค้าในกลุ่ม ${p.data.title}`}>
+                  {p.data.items.map((it) => (
+                    <div class="item-card">
+                      {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
+                      {it.size && <span class="item-card__size">{it.size}</span>}
+                      <h4 class="item-card__name">{it.name}</h4>
+                      <p class="item-card__desc">{it.description}</p>
+                      {it.icons && <img class="item-card__icons" src={it.icons} alt="" loading="lazy" />}
+                    </div>
+                  ))}
+                </div>
+                <button type="button" class="slider__btn slider__btn--prev" aria-label="ก่อนหน้า">‹</button>
+                <button type="button" class="slider__btn slider__btn--next" aria-label="ถัดไป">›</button>
               </div>
             )}
           </article>
@@ -70,6 +75,51 @@ const products = (await getCollection('products')).sort(
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.slider').forEach((slider) => {
+    const track = slider.querySelector<HTMLElement>('.product__items')!;
+    const prev = slider.querySelector<HTMLButtonElement>('.slider__btn--prev')!;
+    const next = slider.querySelector<HTMLButtonElement>('.slider__btn--next')!;
+    const step = () => (track.querySelector<HTMLElement>('.item-card')?.offsetWidth ?? 280) + 19;
+
+    const atStart = () => track.scrollLeft <= 2;
+    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+
+    // เลื่อนวนลูป: ถึงท้ายสุดแล้วกลับไปต้น / ถึงต้นแล้วย้อนไปท้าย
+    const go = (dir: 1 | -1) => {
+      if (dir === 1 && atEnd()) track.scrollTo({ left: 0 });
+      else if (dir === -1 && atStart()) track.scrollTo({ left: track.scrollWidth });
+      else track.scrollBy({ left: dir * step() });
+    };
+
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+
+    // เลื่อนอัตโนมัติ (หยุดเมื่อ hover/โฟกัส/สัมผัส, ไม่ทำงานถ้าผู้ใช้ปิด animation)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const DELAY = 3500;
+    let timer: number | undefined;
+    let visible = false;
+    const stop = () => { clearInterval(timer); timer = undefined; };
+    const start = () => {
+      if (timer || !visible) return;
+      timer = window.setInterval(() => go(1), DELAY);
+    };
+
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      visible ? start() : stop();
+    }, { threshold: 0.3 }).observe(slider);
+
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+    slider.addEventListener('focusin', stop);
+    slider.addEventListener('focusout', start);
+    slider.addEventListener('touchstart', stop, { passive: true });
+    slider.addEventListener('touchend', () => setTimeout(start, DELAY), { passive: true });
+  });
+</script>
 
 <style>
   /* ---------- Quick nav (คลิกเลื่อนไปแต่ละกลุ่ม) ---------- */
@@ -132,40 +182,71 @@ const products = (await getCollection('products')).sort(
   }
   .product__hero img { margin-inline: auto; max-height: 340px; width: auto; }
 
+  .slider { position: relative; }
   .product__items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    display: flex;
     gap: 1.2rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-block: 0.4rem 0.8rem;
   }
-  .item-card {
-    background: var(--c-alice);
-    border: 1px solid #e6eef5;
-    border-radius: 16px;
-    padding: 1.2rem;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-  }
-  .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); }
-  .item-card__img {
-    height: 130px;
-    width: auto;
-    margin: 0 auto 0.9rem;
-    object-fit: contain;
-  }
-  .item-card__size {
-    display: inline-block;
+  .product__items::-webkit-scrollbar { display: none; }
+  .slider__btn {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0;
     background: var(--accent);
     color: #fff;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 0.15rem 0.7rem;
-    border-radius: 999px;
-    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: opacity 0.18s ease, transform 0.18s ease;
   }
-  .item-card__name { font-size: 1rem; color: var(--c-navy); margin-bottom: 0.4rem; }
-  .item-card__desc { font-size: 0.9rem; color: var(--c-muted); }
+  .slider__btn:hover { transform: scale(1.08); }
+  .slider__btn--prev { left: -10px; }
+  .slider__btn--next { right: -10px; }
+  .item-card {
+    flex: 0 0 clamp(300px, 46%, 520px);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #fff 0%, #e8f3fb 100%);
+    border: 0;
+    border-radius: 26px;
+    padding: 2rem 1.6rem 1.6rem;
+    box-shadow: 0 6px 22px rgba(8, 43, 73, 0.1);
+    text-align: center;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .item-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(8, 43, 73, 0.16); }
+  .item-card__img {
+    height: clamp(220px, 28vw, 320px);
+    width: 100%;
+    margin: 0 auto 1.4rem;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 14px rgba(8, 43, 73, 0.12));
+  }
+  .item-card__size {
+    order: 1;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--c-navy);
+    margin-bottom: 0.6rem;
+  }
+  .item-card__name { order: 2; font-size: 1.15rem; font-weight: 700; color: var(--c-navy); margin-bottom: 0.7rem; }
+  .item-card__desc { order: 3; font-size: 0.92rem; line-height: 1.9; color: var(--c-muted); text-align: left; }
+  .item-card__icons { order: 4; width: 100%; height: auto; margin-top: auto; padding-top: 1.4rem; }
 
   @media (max-width: 520px) {
-    .product__items { grid-template-columns: 1fr; }
+    .item-card { flex-basis: 82%; }
+    .slider__btn { display: none; }
     .product-nav { grid-template-columns: 1fr; gap: 0.9rem; }
     .product-nav__card { padding: 1.2rem; }
   }
