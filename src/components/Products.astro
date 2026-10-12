@@ -320,7 +320,7 @@ const products = (await getCollection('products')).sort(
   }
   .item-card__name { order: 2; font-size: 1.15rem; font-weight: 700; color: var(--c-navy); margin-bottom: 0.7rem; }
   .item-card__desc { order: 3; font-size: 0.92rem; line-height: 1.9; color: var(--c-muted); text-align: left; }
-  .item-card__banner { order: 0; width: 100%; height: auto; margin-bottom: 1rem; }
+  .item-card__banner { order: 2; width: 100%; max-width: 340px; height: auto; margin: -0.4rem auto 0; }
   .item-card__extra { order: 5; width: 100%; height: auto; }
   .item-card__icons { order: 4; width: 100%; height: auto; margin-top: auto; padding-top: 1.4rem; }
 
