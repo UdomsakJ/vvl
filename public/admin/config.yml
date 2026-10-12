@@ -62,6 +62,7 @@ collections:
           - { name: size, label: "ขนาด", widget: string, required: false }
           - { name: description, label: "รายละเอียด", widget: text }
           - { name: image, label: "รูปสินค้า", widget: image, required: false }
+          - { name: hideName, label: "ซ่อนชื่อสินค้า (เมื่อรูปแบนเนอร์มีชื่ออยู่แล้ว)", widget: boolean, default: false, required: false }
           - { name: banner, label: "รูปแบนเนอร์ชื่อสินค้า (ใต้รูปสินค้า)", widget: image, required: false }
           - { name: icons, label: "รูปไอคอนจุดเด่น", widget: image, required: false }
           - name: extras

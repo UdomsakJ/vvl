@@ -20,6 +20,7 @@ items:
       อาหารเสริมสำหรับสัตว์เลี้ยง สูตรสำหรับผิวหนังอักเสบ แพ้ และอาการคัน
     image: /images/wvvl-only-pkg-aller-set-06.png
     banner: /images/wvvl-only-pkg-aller-set-07.png
+    hideName: true
     icons: /images/wvvl-only-pkg-aller-set-09.png
     extras:
       - /images/wvvl-only-pkg-aller-set-08.png

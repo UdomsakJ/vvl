@@ -69,7 +69,7 @@ const products = (await getCollection('products')).sort(
                         {it.image && <img class="item-card__img" src={it.image} alt={it.name} loading="lazy" />}
                         {it.banner && <img class="item-card__banner" src={it.banner} alt="" loading="lazy" />}
                         {it.size && <span class="item-card__size">{it.size}</span>}
-                        <h4 class="item-card__name">{it.name}</h4>
+                        <h4 class={`item-card__name${it.hideName ? ' sr-only' : ''}`}>{it.name}</h4>
                         <p class="item-card__desc">{it.description}</p>
                         {it.icons && <img class="item-card__icons" src={it.icons} alt="" loading="lazy" />}
                         {it.extras.map((x) => <img class="item-card__extra" src={x} alt="" loading="lazy" />)}
@@ -313,13 +313,13 @@ const products = (await getCollection('products')).sort(
   }
   .item-card__size {
     order: 1;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     font-weight: 700;
-    color: var(--c-navy);
+    color: #005487;
     margin-bottom: 0.6rem;
   }
-  .item-card__name { order: 2; font-size: 1.15rem; font-weight: 700; color: var(--c-navy); margin-bottom: 0.7rem; }
-  .item-card__desc { order: 3; font-size: 0.92rem; line-height: 1.9; color: var(--c-muted); text-align: left; }
+  .item-card__name { order: 2; font-size: 1.05rem; font-weight: 700; color: #005487; margin-bottom: 0.7rem; }
+  .item-card__desc { order: 3; font-size: 0.875rem; line-height: 1.8; color: #005480; text-align: left; }
   .item-card__banner { order: 2; width: 100%; max-width: 340px; height: auto; margin: -0.4rem auto 0; }
   .item-card__extra { order: 5; width: 100%; height: auto; }
   .item-card__icons { order: 4; width: 100%; height: auto; margin-top: auto; padding-top: 1.4rem; }

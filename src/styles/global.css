@@ -53,6 +53,7 @@ body {
   overflow-x: hidden;
 }
 img, svg { display: block; max-width: 100%; height: auto; }
+button, input, textarea, select { font: inherit; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { line-height: 1.25; color: var(--c-navy); font-weight: 700; }
 ul { padding-left: 1.1rem; }
